@@ -13,6 +13,7 @@ public:
 	int getSize() { return data.size(); }
 
 	bigInt operator+(bigInt& rhs);
+	bigInt operator*(bigInt& rhs);
 	friend std::ostream& operator<< (std::ostream& o,bigInt &rhs);
 
 private:
@@ -65,10 +66,44 @@ bigInt bigInt::operator+(bigInt& rhs)
 	return newBigInt;
 }
 
+bigInt bigInt::operator*(bigInt& bottom)
+{
+	bigInt newBigInt(0);
+	bigInt currentRow;
+	int remainder = 0;
+	int prod = 0;
+	for (int bot = 0; bot < bottom.getSize(); bot++)
+	{
+		remainder = 0;
+		prod = 0;
+		currentRow.data.clear();
+		for (int i = 0; i < bot; i++)
+		{
+			currentRow.data.push_back(0);
+		}
+		for(int top = 0; top < this->getSize(); top++)
+		{
+			prod = (this->data[top] * bottom.data[bot]) + remainder;
+			currentRow.data.push_back(prod % 1000);
+			remainder = prod / 1000;
+		}
+		if(remainder > 0)
+			currentRow.data.push_back(remainder);
+		newBigInt = currentRow + newBigInt;
+	}
+	return newBigInt;
+}
+
 std::ostream& operator<<(std::ostream& out,bigInt& rhs)
 {
-	for (int i = rhs.getSize() - 1; i >= 0; i--)
+	out << rhs.getDataAt(rhs.getSize()-1);
+	for (int i = rhs.getSize() - 2; i >= 0; i--)
 	{
+		int x = rhs.getDataAt(i);
+		if (x < 100)
+			out << '0';
+		if (x < 10)
+			out << '0';
 		out << rhs.getDataAt(i);
 	}
 	return out;

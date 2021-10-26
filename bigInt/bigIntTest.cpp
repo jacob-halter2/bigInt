@@ -6,11 +6,14 @@ using namespace std;
 
 int main()
 {
-	bigInt num1(123450);
-	bigInt num2(35);
+	bigInt num1(1234567890);
+	bigInt num2(12345678);
 	bigInt num3; 
 	num3 = num1 + num2;
-	cout << num3 << endl;
-
+	cout << "addition test: " << num3 << endl;
+	num3 = num1 * num2;
+	cout << "multiplication test: " << num3 << endl;
+	char x;
+	cin >> x;
 	return 0;
 }
