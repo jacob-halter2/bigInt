@@ -6,14 +6,29 @@ class bigInt
 {
 public:
 	bigInt(int x);
+	bigInt(long long x);
 	bigInt();
 	~bigInt();
 	
 	int getDataAt(int i) { return data[i]; }
 	int getSize() { return data.size(); }
 
-	bigInt operator+(bigInt& rhs);
-	bigInt operator*(bigInt& rhs);
+	//comparisons
+	bool   operator< (bigInt& rhs);
+	bool   operator<=(bigInt& rhs);
+	bool   operator> (bigInt& rhs) { return !(*this <=rhs); }
+	bool   operator>=(bigInt& rhs) { return !(*this < rhs); }
+	bool   operator==(bigInt& rhs) { return (*this <= rhs && *this >= rhs); }
+	bool   operator!=(bigInt& rhs) { return !(*this == rhs); }
+
+	//arithmetic + & *
+	bigInt operator+ (bigInt& rhs);
+	bigInt operator+ (int& rhs) { bigInt a(rhs); return (*this + a); }
+	bigInt operator+ (long long& rhs) { bigInt a(rhs); return (*this + a); }
+	bigInt operator* (bigInt& rhs);
+	bigInt operator* (int& rhs) { bigInt a(rhs); return (*this * a); }
+	bigInt operator* (long long& rhs) { bigInt a(rhs); return (*this * a); }
+
 	friend std::ostream& operator<< (std::ostream& o,bigInt &rhs);
 
 private:
@@ -30,6 +45,16 @@ bigInt::bigInt(int x)
 	}
 }
 
+bigInt::bigInt(long long x)
+{
+	data.clear();
+	while (x)
+	{
+		data.push_back((int)(x % 1000));
+		x = x / 1000;
+	}
+}
+
 bigInt::bigInt()
 {
 	data.clear();
@@ -37,6 +62,46 @@ bigInt::bigInt()
 
 bigInt::~bigInt()
 {
+}
+
+bool bigInt::operator<(bigInt& rhs)
+{
+	if (this->getSize() < rhs.getSize())
+		return true;
+	else if (this->getSize() > rhs.getSize())
+		return false;
+	else if (this->getSize() == rhs.getSize())
+	{
+		for(int i = getSize() - 1; i >= 0; i--)
+		{
+			if (this->data[i] < rhs.data[i])
+				return true;
+			else if (this->data[i] > rhs.data[i])
+				return false;
+			//if equal go deeper and try again
+		}
+		return false;//made it all the way through, they are equal
+	}
+}
+
+bool bigInt::operator<=(bigInt& rhs)
+{
+	if (this->getSize() < rhs.getSize())
+		return true;
+	else if (this->getSize() > rhs.getSize())
+		return false;
+	else if (this->getSize() == rhs.getSize())
+	{
+		for (int i = getSize() - 1; i >= 0; i--)
+		{
+			if (this->data[i] < rhs.data[i])
+				return true;
+			else if (this->data[i] > rhs.data[i])
+				return false;
+			//if equal go deeper and try again
+		}
+		return true;//made it all the way through, they are equal
+	}
 }
 
 bigInt bigInt::operator+(bigInt& rhs)
