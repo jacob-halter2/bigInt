@@ -162,7 +162,7 @@ bigInt bigInt::operator*(bigInt& bottom)
 std::ostream& operator<<(std::ostream& out,bigInt& rhs)
 {
 	out << rhs.getDataAt(rhs.getSize()-1);
-	for (int i = rhs.getSize() - 2; i >= 0; i--)
+	for (int i = rhs.getSize() - 2; i >= 0 && i>= rhs.getSize()-12; i--)
 	{
 		int x = rhs.getDataAt(i);
 		if (x < 100)
