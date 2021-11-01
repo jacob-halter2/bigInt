@@ -23,5 +23,8 @@
     <ClInclude Include="bigInt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="bigInt2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -10,7 +10,7 @@ public:
 	bigInt();
 	~bigInt();
 	
-	int getDataAt(int i) { return data[i]; }
+	int getDataAt(int i) { if (i < getSize()) return data[i]; }
 	int getSize() { return data.size(); }
 
 	//comparisons
